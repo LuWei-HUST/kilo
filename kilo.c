@@ -140,6 +140,8 @@ enum KEY_ACTION{
 
 void editorSetStatusMessage(const char *fmt, ...);
 
+void clear_screen();
+
 /* =========================== Syntax highlights DB =========================
  *
  * In order to add a new syntax, define two arrays with a list of file name
@@ -997,6 +999,12 @@ void editorRefreshScreen(void) {
     abFree(&ab);
 }
 
+void clear_screen() {
+    printf("\033[2J");  // 清除整个屏幕
+    printf("\033[H");   // 将光标移动到左上角
+    fflush(stdout);     // 确保立即输出
+}
+
 /* Set an editor status message for the second line of the status, at the
  * end of the screen. */
 void editorSetStatusMessage(const char *fmt, ...) {
@@ -1207,6 +1215,7 @@ void editorProcessKeypress(int fd) {
             quit_times--;
             return;
         }
+        clear_screen();
         exit(0);
         break;
     case CTRL_S:        /* Ctrl-s */
